@@ -1,10 +1,19 @@
 [
   {
-    "Id": 1,
-    "Titulo": "Devil May Cry",
-    "Genero": "Hack and Slash",
-    "Consola": "PlayStation 2",
-    "Ano": 2001,
-    "Descripcion": "Dante, cazador de demonios, enfrenta a Mundus."
+    "Id": "1",
+    "Name": "Producto Ejemplo",
+    "Description": "Descripción del producto",
+    "Price": 99.99,
+    "ImageUrl": "/images/producto1.jpg",
+    "Reviews": [
+      {
+        "Id": "r1",
+        "UserId": "1",
+        "Username": "admin",
+        "Rating": 5,
+        "Comment": "Excelente producto",
+        "CreatedAt": "2026-05-01T10:00:00"
+      }
+    ]
   }
 ]

@@ -1,55 +1,45 @@
-﻿using CatalogoApp.Domain.Interfaces;
-using CatalogoApp.Domain.Models;
+﻿
+using System.Text.Json;
+using Catalogo.Domain.Models;
 
-namespace CatalogoApp.Application.Services
+namespace Catalogo.Application.Services;
+
+public class ItemService
 {
-    public class ItemService
+    private readonly string _filePath;
+
+    public ItemService(string filePath)
     {
-        private readonly IItemRepository _repo;
+        _filePath = filePath;
+    }
 
-        // El servicio recibe el repositorio por constructor
-        // No sabe si es JSON, SQL, memoria, etc.
-        public ItemService(IItemRepository repo)
-        {
-            _repo = repo;
-        }
+    private List<Item> LoadItems()
+    {
+        if (!File.Exists(_filePath)) return new();
+        var json = File.ReadAllText(_filePath);
+        return JsonSerializer.Deserialize<List<Item>>(json,
+            new JsonSerializerOptions { PropertyNameCaseInsensitive = true }) ?? new();
+    }
 
-        public List<Item> ObtenerTodos()
-        {
-            return _repo.ObtenerTodos();
-        }
+    private void SaveItems(List<Item> items)
+    {
+        var json = JsonSerializer.Serialize(items, new JsonSerializerOptions { WriteIndented = true });
+        File.WriteAllText(_filePath, json);
+    }
 
-        public Item? ObtenerPorId(int id)
-        {
-            return _repo.ObtenerPorId(id);
-        }
+    public List<Item> GetAll() => LoadItems();
 
-        public void Agregar(Item item)
-        {
-            // Aquí podrías agregar validaciones de negocio
-            // Por ejemplo: if (string.IsNullOrEmpty(item.Titulo)) throw...
-            _repo.Agregar(item);
-        }
+    public Item? GetById(string id) =>
+        LoadItems().FirstOrDefault(i => i.Id == id);
 
-        public void Eliminar(int id)
-        {
-            _repo.Eliminar(id);
-        }
+    public (bool success, string message) AddReview(string itemId, Review review)
+    {
+        var items = LoadItems();
+        var item = items.FirstOrDefault(i => i.Id == itemId);
+        if (item == null) return (false, "Producto no encontrado.");
 
-        // Método útil para el filtro por categoría/género
-        public List<Item> ObtenerPorGenero(string genero)
-        {
-            return _repo.ObtenerTodos()
-                        .Where(i => i.Genero == genero)
-                        .ToList();
-        }
-
-        public List<string> ObtenerGeneros()
-        {
-            return _repo.ObtenerTodos()
-                        .Select(i => i.Genero)
-                        .Distinct()
-                        .ToList();
-        }
+        item.Reviews.Add(review);
+        SaveItems(items);
+        return (true, "Reseña agregada correctamente.");
     }
 }

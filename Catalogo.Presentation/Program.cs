@@ -1,33 +1,39 @@
-using CatalogoApp.Application.Services;
-using CatalogoApp.Domain.Interfaces;
-using CatalogoApp.Infrastructure.Repositories;
+using Catalogo.Application.Services;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Agregar servicios MVC
 builder.Services.AddControllersWithViews();
 
-// Ruta del archivo JSON
-var jsonPath = Path.Combine(
-    builder.Environment.ContentRootPath,
-    "Data",
-    "items.json"
-);
+// Autenticación con cookies
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options =>
+    {
+        options.LoginPath = "/Account/Login";
+        options.LogoutPath = "/Account/Logout";
+        options.AccessDeniedPath = "/Account/Login";
+        options.ExpireTimeSpan = TimeSpan.FromHours(2);
+    });
 
-// Registrar repositorio
-builder.Services.AddSingleton<IItemRepository>(
-    new JsonItemRepository(jsonPath)
-);
+builder.Services.AddHttpContextAccessor();
 
-// Registrar servicio
-builder.Services.AddScoped<ItemService>();
+// Registro de servicios
+builder.Services.AddScoped<UserService>(provider =>
+{
+    var env = provider.GetRequiredService<IWebHostEnvironment>();
+    var path = Path.Combine(env.ContentRootPath, "Data", "users.json");
+    return new UserService(path);
+});
 
-// Agregar autorización
-builder.Services.AddAuthorization();
+builder.Services.AddScoped<ItemService>(provider =>
+{
+    var env = provider.GetRequiredService<IWebHostEnvironment>();
+    var path = Path.Combine(env.ContentRootPath, "Data", "items.json");
+    return new ItemService(path);
+});
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
@@ -35,17 +41,14 @@ if (!app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
+app.UseStaticFiles();
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
-
-app.MapStaticAssets();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}"
-)
-.WithStaticAssets();
+    pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();

@@ -1,11 +1,89 @@
-﻿@model CatalogoApp.Domain.Models.Item
- 
-<h1>@Model.Titulo</h1>
- 
-<p><strong>Género:</strong> @Model.Genero</p>
-<p><strong>Consola:</strong> @Model.Consola</p>
-<p><strong>Año:</strong> @Model.Ano</p>
-<p><strong>Descripción:</strong> @Model.Descripcion</p>
- 
-<hr />
-<a asp-action="Index">&larr; Volver al catálogo</a>
+﻿@model Catalogo.Domain.Models.Item
+@{
+    ViewData["Title"] = Model.Name;
+}
+
+<div class="row mt-4">
+    <div class="col-md-5">
+        <img src="@Model.ImageUrl" class="img-fluid rounded shadow" alt="@Model.Name" />
+    </div>
+    <div class="col-md-7">
+        <h2>@Model.Name</h2>
+        <p class="text-muted">@Model.Description</p>
+        <h4 class="text-success">$@Model.Price</h4>
+        <a asp-action="Index" class="btn btn-outline-secondary mt-2">← Volver al catálogo</a>
+    </div>
+</div>
+
+<hr class="my-4" />
+
+<!-- SECCIÓN DE RESEÑAS -->
+<h4>Reseñas (@Model.Reviews.Count)</h4>
+
+@if (!Model.Reviews.Any())
+{
+    <p class="text-muted">Aún no hay reseñas. ¡Sé el primero!</p>
+}
+
+@foreach (var review in Model.Reviews.OrderByDescending(r => r.CreatedAt))
+{
+    <div class="card mb-3">
+        <div class="card-body">
+            <div class="d-flex justify-content-between">
+                <strong>@review.Username</strong>
+                <small class="text-muted">@review.CreatedAt.ToString("dd/MM/yyyy")</small>
+            </div>
+            <div class="text-warning my-1">
+                @for (int i = 1; i <= 5; i++)
+                {
+                    <span>@(i <= review.Rating ? "★" : "☆")</span>
+                }
+            </div>
+            <p class="mb-0">@review.Comment</p>
+        </div>
+    </div>
+}
+
+<!-- FORMULARIO NUEVA RESEÑA -->
+@if (User.Identity?.IsAuthenticated == true)
+{
+    <div class="card mt-4">
+        <div class="card-header">Dejar una reseña</div>
+        <div class="card-body">
+            @if (TempData["Success"] != null)
+            {
+                <div class="alert alert-success">@TempData["Success"]</div>
+            }
+            @if (TempData["Error"] != null)
+            {
+                <div class="alert alert-danger">@TempData["Error"]</div>
+            }
+            <form method="post" asp-action="AgregarResena" asp-controller="Catalogo">
+                <input type="hidden" name="itemId" value="@Model.Id" />
+                <div class="mb-3">
+                    <label class="form-label">Calificación</label>
+                    <select name="rating" class="form-select" required>
+                        <option value="">Selecciona...</option>
+                        <option value="5">★★★★★ Excelente</option>
+                        <option value="4">★★★★☆ Muy bueno</option>
+                        <option value="3">★★★☆☆ Regular</option>
+                        <option value="2">★★☆☆☆ Malo</option>
+                        <option value="1">★☆☆☆☆ Muy malo</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Opinión</label>
+                    <textarea name="comment" class="form-control" rows="3"
+                              placeholder="Escribe tu opinión..." required></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Publicar reseña</button>
+            </form>
+        </div>
+    </div>
+}
+else
+{
+    <div class="alert alert-info mt-4">
+        <a asp-controller="Account" asp-action="Login">Inicia sesión</a> para dejar una reseña.
+    </div>
+}
