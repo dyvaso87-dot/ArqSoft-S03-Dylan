@@ -1,28 +1,32 @@
 ﻿@model List<CatalogoApp.Domain.Models.Item>
 @{
-    ViewData["Title"] = "Catálogo de Canciones";
+    ViewData["Title"] = "Catálogo";
 }
 
-<h2 class="mb-4">🎵 Catálogo de Canciones</h2>
+<h2 class="section-title mt-4">🎵 Catálogo de Canciones</h2>
 
 <div class="row row-cols-1 row-cols-md-3 g-4">
     @foreach (var item in Model)
     {
         <div class="col">
-            <div class="card h-100 shadow-sm">
+            <div class="music-card">
                 <div class="card-body">
-                    <h5 class="card-title">🎵 @item.Titulo</h5>
-                    <h6 class="text-muted">@item.Consola</h6>
-                    <p class="card-text small">@item.Descripcion</p>
-                    <span class="badge bg-secondary">🎸 @item.Genero</span>
-                    <span class="badge bg-primary ms-1">📅 @item.Ano</span>
+                    <div class="text-center mb-3" style="font-size:3rem;">🎵</div>
+                    <h5>@item.Titulo</h5>
+                    <h6>@item.Consola</h6>
+                    <p class="text-muted small">@item.Descripcion</p>
+                    <div class="d-flex gap-2 flex-wrap mt-3">
+                        <span class="badge-music">🎸 @item.Genero</span>
+                        <span class="badge-year">📅 @item.Ano</span>
+                    </div>
                 </div>
-                <div class="card-footer">
-                    <a asp-action="Detalle" asp-route-id="@item.Id" class="btn btn-primary btn-sm w-100">
-                        Ver detalle
+                <div class="card-footer d-flex justify-content-between align-items-center">
+                    <small class="text-muted">⭐ @item.Reviews.Count reseñas</small>
+                    <a asp-action="Detalle" asp-route-id="@item.Id" class="btn btn-purple btn-sm px-4">
+                        Ver más →
                     </a>
                 </div>
             </div>
         </div>
     }
-</div>s
+</div>

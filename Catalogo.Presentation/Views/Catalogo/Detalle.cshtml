@@ -5,83 +5,91 @@
 
 <div class="row mt-4">
     <div class="col-md-12">
-        <h2>🎵 @Model.Titulo</h2>
-        <h5 class="text-muted">@Model.Consola</h5>
-        <p>@Model.Descripcion</p>
-        <span class="badge bg-secondary fs-6">🎸 @Model.Genero</span>
-        <span class="badge bg-primary fs-6 ms-2">📅 @Model.Ano</span>
-        <br /><br />
-        <a asp-action="Index" class="btn btn-outline-secondary">← Volver al catálogo</a>
+        <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(139,92,246,0.3); border-radius: 20px; padding: 30px;">
+            <div class="text-center mb-3" style="font-size: 4rem;">🎵</div>
+            <h2 style="font-weight: 800; color: #fff;">@Model.Titulo</h2>
+            <h5 style="color: #8b5cf6;">@Model.Consola</h5>
+            <p style="color: rgba(255,255,255,0.7);">@Model.Descripcion</p>
+            <div class="d-flex gap-2 flex-wrap mt-3">
+                <span class="badge-music">🎸 @Model.Genero</span>
+                <span class="badge-year">📅 @Model.Ano</span>
+            </div>
+            <div class="mt-4">
+                <a asp-action="Index" class="btn btn-outline-light btn-sm px-4">← Volver al catálogo</a>
+            </div>
+        </div>
     </div>
 </div>
 
-<hr class="my-4" />
+<hr style="border-color: rgba(255,255,255,0.1); margin: 30px 0;" />
 
-<h4>⭐ Reseñas (@Model.Reviews.Count)</h4>
+<h4 style="font-weight: 700; color: #fff;">⭐ Reseñas (@Model.Reviews.Count)</h4>
 
 @if (!Model.Reviews.Any())
 {
-    <p class="text-muted">Aún no hay reseñas. ¡Sé el primero!</p>
+    <p style="color: rgba(255,255,255,0.5);">Aún no hay reseñas. ¡Sé el primero!</p>
 }
 
 @foreach (var review in Model.Reviews.OrderByDescending(r => r.CreatedAt))
 {
-    <div class="card mb-3">
-        <div class="card-body">
-            <div class="d-flex justify-content-between">
-                <strong>@review.Username</strong>
-                <small class="text-muted">@review.CreatedAt.ToString("dd/MM/yyyy")</small>
-            </div>
-            <div class="text-warning my-1">
-                @for (int i = 1; i <= 5; i++)
-                {
-                    <span>@(i <= review.Rating ? "★" : "☆")</span>
-                }
-            </div>
-            <p class="mb-0">@review.Comment</p>
+    <div class="review-card">
+        <div class="d-flex justify-content-between">
+            <strong style="color: #fff;">@review.Username</strong>
+            <small style="color: rgba(255,255,255,0.4);">@review.CreatedAt.ToString("dd/MM/yyyy")</small>
         </div>
+        <div style="color: #f59e0b; margin: 8px 0;">
+            @for (int i = 1; i <= 5; i++)
+            {
+                <span>@(i <= review.Rating ? "★" : "☆")</span>
+            }
+        </div>
+        <p style="color: rgba(255,255,255,0.7); margin: 0;">@review.Comment</p>
     </div>
 }
 
 @if (User.Identity?.IsAuthenticated == true)
 {
-    <div class="card mt-4">
-        <div class="card-header">✍️ Dejar una reseña</div>
-        <div class="card-body">
-            @if (TempData["Success"] != null)
-            {
-                <div class="alert alert-success">@TempData["Success"]</div>
-            }
-            @if (TempData["Error"] != null)
-            {
-                <div class="alert alert-danger">@TempData["Error"]</div>
-            }
-            <form method="post" asp-action="AgregarResena" asp-controller="Catalogo">
-                <input type="hidden" name="itemId" value="@Model.Id" />
-                <div class="mb-3">
-                    <label class="form-label">Calificación</label>
-                    <select name="rating" class="form-select" required>
-                        <option value="">Selecciona...</option>
-                        <option value="5">★★★★★ Excelente</option>
-                        <option value="4">★★★★☆ Muy bueno</option>
-                        <option value="3">★★★☆☆ Regular</option>
-                        <option value="2">★★☆☆☆ Malo</option>
-                        <option value="1">★☆☆☆☆ Muy malo</option>
-                    </select>
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">Opinión</label>
-                    <textarea name="comment" class="form-control" rows="3"
-                              placeholder="Escribe tu opinión..." required></textarea>
-                </div>
-                <button type="submit" class="btn btn-primary">Publicar reseña</button>
-            </form>
-        </div>
+    <div class="mt-4" style="background: rgba(255,255,255,0.03); border: 1px solid rgba(139,92,246,0.3); border-radius: 20px; padding: 30px;">
+        <h5 style="color: #a78bfa; font-weight: 700; margin-bottom: 20px;">✍️ Dejar una reseña</h5>
+
+        @if (TempData["Success"] != null)
+        {
+            <div class="alert alert-success">@TempData["Success"]</div>
+        }
+        @if (TempData["Error"] != null)
+        {
+            <div class="alert alert-danger">@TempData["Error"]</div>
+        }
+
+        <form method="post" asp-action="AgregarResena" asp-controller="Catalogo">
+            <input type="hidden" name="itemId" value="@Model.Id" />
+            <div class="mb-3">
+                <label class="form-label" style="color: rgba(255,255,255,0.6); font-size: 0.9rem;">Calificación</label>
+                <select name="rating" class="form-select" required>
+                    <option value="">Selecciona tu calificación...</option>
+                    <option value="5">★★★★★ Excelente</option>
+                    <option value="4">★★★★☆ Muy bueno</option>
+                    <option value="3">★★★☆☆ Regular</option>
+                    <option value="2">★★☆☆☆ Malo</option>
+                    <option value="1">★☆☆☆☆ Muy malo</option>
+                </select>
+            </div>
+            <div class="mb-4">
+                <label class="form-label" style="color: rgba(255,255,255,0.6); font-size: 0.9rem;">Opinión</label>
+                <textarea name="comment" class="form-control" rows="4"
+                          placeholder="Escribe tu opinión sobre esta canción..." required></textarea>
+            </div>
+            <button type="submit" class="btn btn-purple px-4 py-2">
+                🎵 Publicar reseña
+            </button>
+        </form>
     </div>
 }
 else
 {
-    <div class="alert alert-info mt-4">
-        <a asp-controller="Account" asp-action="Login">Inicia sesión</a> para dejar una reseña.
+    <div class="mt-4" style="background: rgba(139,92,246,0.08); border: 1px solid rgba(139,92,246,0.25); border-radius: 16px; padding: 25px; text-align: center;">
+        <p style="color: rgba(255,255,255,0.6); margin: 0;">
+            🎵 <a asp-controller="Account" asp-action="Login" style="color: #a78bfa; font-weight: 600;">Inicia sesión</a> para dejar tu reseña
+        </p>
     </div>
 }

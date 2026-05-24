@@ -3,20 +3,33 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - Catalogo</title>
+    <title>@ViewData["Title"] - 🎵 MusicStore</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;900&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 </head>
 <body>
+    <!-- Notas flotantes -->
+    <div class="floating-notes">
+        <span class="note" style="left:5%; animation-duration:12s; animation-delay:0s; font-size:1.5rem;">🎵</span>
+        <span class="note" style="left:15%; animation-duration:18s; animation-delay:3s;">🎶</span>
+        <span class="note" style="left:30%; animation-duration:14s; animation-delay:6s; font-size:1.2rem;">🎸</span>
+        <span class="note" style="left:50%; animation-duration:20s; animation-delay:1s;">🎵</span>
+        <span class="note" style="left:65%; animation-duration:16s; animation-delay:4s; font-size:1.8rem;">🎹</span>
+        <span class="note" style="left:80%; animation-duration:13s; animation-delay:8s;">🎶</span>
+        <span class="note" style="left:90%; animation-duration:17s; animation-delay:2s; font-size:1.3rem;">🎤</span>
+    </div>
+
     <header>
-        <nav class="navbar navbar-expand-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-controller="Home" asp-action="Index">🎵 CatálogoApp</a>
+        <nav class="navbar navbar-expand-sm">
+            <div class="container">
+                <a class="navbar-brand" asp-controller="Home" asp-action="Index">🎵 MusicStore</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
+                    <ul class="navbar-nav flex-grow-1 ms-4">
                         <li class="nav-item">
                             <a class="nav-link" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
@@ -24,7 +37,7 @@
                             <a class="nav-link" asp-controller="Catalogo" asp-action="Index">Catálogo</a>
                         </li>
                     </ul>
-                    <ul class="navbar-nav">
+                    <ul class="navbar-nav gap-2 align-items-center">
                         @if (User.Identity?.IsAuthenticated == true)
                         {
                             <li class="nav-item">
@@ -32,17 +45,19 @@
                             </li>
                             <li class="nav-item">
                                 <form method="post" asp-controller="Account" asp-action="Logout" class="d-inline">
-                                    <button type="submit" class="btn btn-outline-danger btn-sm mt-1">Cerrar sesión</button>
+                                    <button type="submit" class="btn btn-sm btn-outline-danger" style="border-radius:20px; padding: 6px 20px;">
+                                        Salir
+                                    </button>
                                 </form>
                             </li>
                         }
                         else
                         {
                             <li class="nav-item">
-                                <a class="nav-link" asp-controller="Account" asp-action="Login">Iniciar sesión</a>
+                                <a class="nav-link btn-nav-login" asp-controller="Account" asp-action="Login">Iniciar sesión</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" asp-controller="Account" asp-action="Register">Registrarse</a>
+                                <a class="nav-link btn-nav-register" asp-controller="Account" asp-action="Register">Registrarse</a>
                             </li>
                         }
                     </ul>
@@ -51,22 +66,18 @@
         </nav>
     </header>
 
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody() <!-- ← ESTA LÍNEA ES LA QUE FALTABA -->
+    <div class="container py-4">
+        <main role="main">
+            @RenderBody()
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2026 - CatálogoApp
-        </div>
+    <footer>
+        <p class="mb-0">🎵 MusicStore &copy; 2026 — Hecho con ❤️ y mucha música</p>
     </footer>
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
-
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
