@@ -1,24 +1,23 @@
-﻿@model Catalogo.Domain.Models.Item
+﻿@model CatalogoApp.Domain.Models.Item
 @{
-    ViewData["Title"] = Model.Name;
+    ViewData["Title"] = Model.Titulo;
 }
 
 <div class="row mt-4">
-    <div class="col-md-5">
-        <img src="@Model.ImageUrl" class="img-fluid rounded shadow" alt="@Model.Name" />
-    </div>
-    <div class="col-md-7">
-        <h2>@Model.Name</h2>
-        <p class="text-muted">@Model.Description</p>
-        <h4 class="text-success">$@Model.Price</h4>
-        <a asp-action="Index" class="btn btn-outline-secondary mt-2">← Volver al catálogo</a>
+    <div class="col-md-12">
+        <h2>🎵 @Model.Titulo</h2>
+        <h5 class="text-muted">@Model.Consola</h5>
+        <p>@Model.Descripcion</p>
+        <span class="badge bg-secondary fs-6">🎸 @Model.Genero</span>
+        <span class="badge bg-primary fs-6 ms-2">📅 @Model.Ano</span>
+        <br /><br />
+        <a asp-action="Index" class="btn btn-outline-secondary">← Volver al catálogo</a>
     </div>
 </div>
 
 <hr class="my-4" />
 
-<!-- SECCIÓN DE RESEÑAS -->
-<h4>Reseñas (@Model.Reviews.Count)</h4>
+<h4>⭐ Reseñas (@Model.Reviews.Count)</h4>
 
 @if (!Model.Reviews.Any())
 {
@@ -44,11 +43,10 @@
     </div>
 }
 
-<!-- FORMULARIO NUEVA RESEÑA -->
 @if (User.Identity?.IsAuthenticated == true)
 {
     <div class="card mt-4">
-        <div class="card-header">Dejar una reseña</div>
+        <div class="card-header">✍️ Dejar una reseña</div>
         <div class="card-body">
             @if (TempData["Success"] != null)
             {

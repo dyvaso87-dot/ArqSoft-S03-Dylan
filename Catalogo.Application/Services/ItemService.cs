@@ -1,6 +1,5 @@
-﻿
-using System.Text.Json;
-using Catalogo.Domain.Models;
+﻿using System.Text.Json;
+using CatalogoApp.Domain.Models;
 
 namespace Catalogo.Application.Services;
 
@@ -29,15 +28,14 @@ public class ItemService
 
     public List<Item> GetAll() => LoadItems();
 
-    public Item? GetById(string id) =>
+    public Item? GetById(int id) =>
         LoadItems().FirstOrDefault(i => i.Id == id);
 
-    public (bool success, string message) AddReview(string itemId, Review review)
+    public (bool success, string message) AddReview(int itemId, Review review)
     {
         var items = LoadItems();
         var item = items.FirstOrDefault(i => i.Id == itemId);
-        if (item == null) return (false, "Producto no encontrado.");
-
+        if (item == null) return (false, "Canción no encontrada.");
         item.Reviews.Add(review);
         SaveItems(items);
         return (true, "Reseña agregada correctamente.");

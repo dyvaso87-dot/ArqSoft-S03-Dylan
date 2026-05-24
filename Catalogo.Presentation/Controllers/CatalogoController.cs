@@ -1,8 +1,8 @@
-﻿using System.Security.Claims;
+﻿using CatalogoApp.Domain.Models;
 using Catalogo.Application.Services;
-using Catalogo.Domain.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace Catalogo.Presentation.Controllers;
 
@@ -21,7 +21,7 @@ public class CatalogoController : Controller
         return View(items);
     }
 
-    public IActionResult Detalle(string id)
+    public IActionResult Detalle(int id)
     {
         var item = _itemService.GetById(id);
         if (item == null) return NotFound();
@@ -29,8 +29,8 @@ public class CatalogoController : Controller
     }
 
     [HttpPost]
-    [Authorize] // Solo usuarios autenticados pueden opinar
-    public IActionResult AgregarResena(string itemId, int rating, string comment)
+    [Authorize]
+    public IActionResult AgregarResena(int itemId, int rating, string comment)
     {
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier)!;
         var username = User.FindFirstValue(ClaimTypes.Name)!;

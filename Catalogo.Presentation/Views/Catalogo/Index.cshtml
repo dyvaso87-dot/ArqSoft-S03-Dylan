@@ -1,29 +1,28 @@
 ﻿@model List<CatalogoApp.Domain.Models.Item>
- 
-<h1>Catálogo de Videojuegos</h1>
- 
-<!-- Filtro por Genero -->
-<div>
-    <a asp-action="Index">Todos</a>
-    @foreach (var gen in ViewBag.Generos as List<string>)
-    {
-        <span> | </span>
-        <a asp-action="Index" asp-route-genero="@gen">@gen</a>
-    }
-</div>
- 
-<hr />
- 
-<!-- Lista de Items -->
-<ul>
+@{
+    ViewData["Title"] = "Catálogo de Canciones";
+}
+
+<h2 class="mb-4">🎵 Catálogo de Canciones</h2>
+
+<div class="row row-cols-1 row-cols-md-3 g-4">
     @foreach (var item in Model)
     {
-        <li>
-            <a asp-action="Detalle" asp-route-id="@item.Id">@item.Titulo</a>
-            &mdash; @item.Genero &diams; @item.Ano
-        </li>
+        <div class="col">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">🎵 @item.Titulo</h5>
+                    <h6 class="text-muted">@item.Consola</h6>
+                    <p class="card-text small">@item.Descripcion</p>
+                    <span class="badge bg-secondary">🎸 @item.Genero</span>
+                    <span class="badge bg-primary ms-1">📅 @item.Ano</span>
+                </div>
+                <div class="card-footer">
+                    <a asp-action="Detalle" asp-route-id="@item.Id" class="btn btn-primary btn-sm w-100">
+                        Ver detalle
+                    </a>
+                </div>
+            </div>
+        </div>
     }
-</ul>
- 
-<hr />
-<a asp-action="Agregar">+ Agregar videojuego</a>
+</div>s

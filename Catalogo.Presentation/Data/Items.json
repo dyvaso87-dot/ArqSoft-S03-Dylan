@@ -1,19 +1,56 @@
 [
   {
-    "Id": "1",
-    "Name": "Producto Ejemplo",
-    "Description": "Descripción del producto",
-    "Price": 99.99,
-    "ImageUrl": "/images/producto1.jpg",
+    "Id": 1,
+    "Titulo": "Blinding Lights",
+    "Genero": "Synth-pop / R\u0026B",
+    "Consola": "The Weeknd \u2014 After Hours (2020)",
+    "Ano": 2020,
+    "Descripcion": "Una de las canciones m\u00E1s escuchadas de la d\u00E9cada. Duraci\u00F3n: 3:20 \u2014 $1.29",
     "Reviews": [
       {
-        "Id": "r1",
-        "UserId": "1",
-        "Username": "admin",
+        "Id": "4a2875af-e3dc-4a9f-838b-935a794a92a9",
+        "UserId": "899526ff-4337-4885-8795-5f6e0806dd3b",
+        "Username": "Agentedyvaso",
         "Rating": 5,
-        "Comment": "Excelente producto",
-        "CreatedAt": "2026-05-01T10:00:00"
+        "Comment": "Amo esta musica",
+        "CreatedAt": "2026-05-23T19:37:44.7396315-06:00"
       }
     ]
+  },
+  {
+    "Id": 2,
+    "Titulo": "Flowers",
+    "Genero": "Pop / Dance-pop",
+    "Consola": "Miley Cyrus \u2014 Endless Summer Vacation (2023)",
+    "Ano": 2023,
+    "Descripcion": "Canci\u00F3n de empoderamiento personal. Duraci\u00F3n: 3:21 \u2014 $1.29",
+    "Reviews": []
+  },
+  {
+    "Id": 3,
+    "Titulo": "Shakira: Bzrp Music Sessions #53",
+    "Genero": "Reggaeton / Latin Pop",
+    "Consola": "Bizarrap \u0026 Shakira \u2014 Music Sessions Vol. 53 (2023)",
+    "Ano": 2023,
+    "Descripcion": "Uno de los lanzamientos latinos m\u00E1s virales de 2023. Duraci\u00F3n: 2:57 \u2014 $0.99",
+    "Reviews": []
+  },
+  {
+    "Id": 4,
+    "Titulo": "As It Was",
+    "Genero": "Synth-pop / Indie pop",
+    "Consola": "Harry Styles \u2014 Harry\u0027s House (2022)",
+    "Ano": 2022,
+    "Descripcion": "Mezcla pop con sonidos de los 80s. Duraci\u00F3n: 2:37 \u2014 $1.29",
+    "Reviews": []
+  },
+  {
+    "Id": 5,
+    "Titulo": "Unholy",
+    "Genero": "Pop / Dance",
+    "Consola": "Sam Smith ft. Kim Petras \u2014 Gloria (2022)",
+    "Ano": 2022,
+    "Descripcion": "\u00C9xito global del 2022 con sonido oscuro y bailable. Duraci\u00F3n: 2:36 \u2014 $1.29",
+    "Reviews": []
   }
 ]
